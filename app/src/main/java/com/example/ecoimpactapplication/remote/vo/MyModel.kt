@@ -1,3 +1,5 @@
 package com.example.ecoimpactapplication.remote.vo
 
-data class MyModel()
+data class MyModel(
+    val names: List<String>
+)

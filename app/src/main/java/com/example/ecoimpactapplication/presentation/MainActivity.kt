@@ -1,22 +1,23 @@
-package com.example.ecoimpactapplication
+package com.example.ecoimpactapplication.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.ecoimpactapplication.databinding.ActivityMainBinding
-
+import com.example.ecoimpactapplication.R
+import permissions.dispatcher.ktx.LocationPermission
+import permissions.dispatcher.ktx.PermissionsRequester
+import permissions.dispatcher.ktx.constructLocationPermissionRequest
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
         changeFragment()
+    }
 
-        setOnClickListeners()
+    private fun receiveLocation() {
+
     }
 
     private fun changeFragment() {
@@ -25,11 +26,5 @@ class MainActivity : AppCompatActivity() {
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fragment_container, mapFragment)
         fragmentTransaction.commitAllowingStateLoss()
-    }
-
-    private fun setOnClickListeners() {
-        binding.analyzeArea.setOnClickListener {
-
-        }
     }
 }
