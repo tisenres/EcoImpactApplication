@@ -2,22 +2,25 @@ package com.example.ecoimpactapplication.presentation
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.location.LocationListener
+import android.graphics.Color
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.ecoimpactapplication.databinding.FragmentMapBinding
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolygonOptions
 import permissions.dispatcher.ktx.LocationPermission
 import permissions.dispatcher.ktx.PermissionsRequester
 import permissions.dispatcher.ktx.constructLocationPermissionRequest
+
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
@@ -71,66 +74,52 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         map.uiSettings.isZoomGesturesEnabled = true
         map.uiSettings.isScrollGesturesEnabled = true
 
-        pushMarkers()
         permissionRequester.launch()
+        pushMarkers()
 
     }
 
     private fun pushMarkers() {
 
-        val defaultLocation = LatLng(37.7749, -122.4194)
-        map.addMarker(
-            MarkerOptions()
-                .position(defaultLocation)
-                .title("Marker in Sydney")
+        val defaultLocation = LatLng(0.0, 0.0)
+        val defaultLocation2 = LatLng(0.0, 40.0)
+        val defaultLocation3 = LatLng(40.0, 40.0)
+        val defaultLocation4 = LatLng(40.0, 0.0)
+        val defaultLocation5 = LatLng(-60.0, -40.0)
+
+        val polygon = map.addPolygon(
+            PolygonOptions()
+                .add(defaultLocation, defaultLocation2, defaultLocation3, defaultLocation4)
+                .strokeColor(Color.RED)
+                .fillColor(Color.BLUE)
         )
 
-        val defaultLocation2 = LatLng(78.7749, -175.4194)
-        map.addMarker(
-            MarkerOptions()
-                .position(defaultLocation2)
-                .title("Marker in Sydney")
+        val circle = map.addCircle(
+            CircleOptions().center(defaultLocation5)
+                .radius(10000.0)
+                .strokeColor(Color.RED)
+                .fillColor(Color.BLUE)
         )
 
-        val defaultLocation3 = LatLng(39.7749, -127.4194)
-        map.addMarker(
-            MarkerOptions()
-                .position(defaultLocation3)
-                .title("Marker in Sydney")
-        )
+        polygon.isClickable = true
+        circle.isClickable = true
 
-        val defaultLocation4 = LatLng(8.7749, 43.4194)
-        map.addMarker(
-            MarkerOptions()
-                .position(defaultLocation4)
-                .title("Marker in Sydney")
-        )
-//        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 15F));
+        map.setOnCircleClickListener { circle ->
+            circle.fillColor = Color.YELLOW
+//            circle.fillColor = Color.alpha(Color.RED, 80)
+            circle.radius = 1000000.0
+        }
 
-    }
+        map.setOnPolygonClickListener { polygon ->
+            polygon.fillColor = Color.WHITE
+            polygon.strokeColor = Color.BLACK
+        }
 
-    private val locationListener = LocationListener { location ->
-        val latitude = location.latitude
-        val longitude = location.longitude
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 15.0f))
     }
 
     override fun onResume() {
         super.onResume()
         binding.mapView.onResume()
-//        if (
-//            context?.let {context ->
-//                ActivityCompat.checkSelfPermission(
-//                    context,
-//                    Manifest.permission.ACCESS_FINE_LOCATION
-//                ) == PackageManager.PERMISSION_GRANTED
-//                        && ActivityCompat.checkSelfPermission(
-//                    context,
-//                    Manifest.permission.ACCESS_COARSE_LOCATION
-//                ) == PackageManager.PERMISSION_GRANTED
-//            } == true) {
-//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10.toFloat(), locationListener)
-//        }
     }
 
     override fun onPause() {
