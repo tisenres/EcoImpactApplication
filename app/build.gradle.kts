@@ -67,5 +67,9 @@ dependencies {
     // Permission dispatcher
     implementation("com.github.permissions-dispatcher:ktx:1.1.4")
 
+    implementation("androidx.webkit:webkit:1.8.0")
+
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
 }

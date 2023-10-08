@@ -16,10 +16,6 @@ class MainActivity : AppCompatActivity() {
         changeFragment()
     }
 
-    private fun receiveLocation() {
-
-    }
-
     private fun changeFragment() {
         val mapFragment = MapFragment()
         val fragmentManager = supportFragmentManager
